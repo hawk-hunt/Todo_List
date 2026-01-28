@@ -10,9 +10,18 @@
 
 import axios from 'axios';
 
+// Determine API base URL
+// In development: use relative /api (proxied to backend via Vite)
+// In production: use full URL to backend
+const API_BASE_URL = import.meta.env.DEV 
+  ? '/api' 
+  : (import.meta.env.VITE_API_URL || 'http://localhost:5000/api');
+
 // Create axios instance with default configuration
+// In development, Vite proxy forwards /api requests to http://localhost:5000
+// In production, requests go directly to backend server
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: API_BASE_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'

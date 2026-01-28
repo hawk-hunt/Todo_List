@@ -3,6 +3,10 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
+import Statistics from './pages/Statistics'
+import Profile from './pages/Profile'
+import Settings from './pages/Settings'
+import Teams from './pages/Teams'
 import './App.css'
 
 /**
@@ -36,13 +40,25 @@ function App() {
     setLoading(false);
 
     // Listen for storage changes (token added/removed)
+    // This handles: logout, login from other tabs, etc
     const handleStorageChange = () => {
       const newToken = localStorage.getItem('token');
       setIsLoggedIn(!!newToken);
     };
 
+    // Also listen for custom event from Login component
+    // This handles immediate redirect after login in same tab
+    const handleLoginSuccess = () => {
+      const newToken = localStorage.getItem('token');
+      setIsLoggedIn(!!newToken);
+    };
+
     window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    window.addEventListener('login-success', handleLoginSuccess);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('login-success', handleLoginSuccess);
+    };
   }, []);
 
   if (loading) {
@@ -62,22 +78,42 @@ function App() {
         element={<Register />} 
       />
 
-      {/* Protected Routes */}
+      {/* Protected Routes - Only accessible if logged in */}
       <Route 
         path="/dashboard" 
-        element={<Dashboard />} 
+        element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" replace />} 
       />
 
-      {/* Default route */}
+      <Route 
+        path="/statistics" 
+        element={isLoggedIn ? <Statistics /> : <Navigate to="/login" replace />} 
+      />
+
+      <Route 
+        path="/profile" 
+        element={isLoggedIn ? <Profile /> : <Navigate to="/login" replace />} 
+      />
+
+      <Route 
+        path="/settings" 
+        element={isLoggedIn ? <Settings /> : <Navigate to="/login" replace />} 
+      />
+
+      <Route 
+        path="/teams" 
+        element={isLoggedIn ? <Teams /> : <Navigate to="/login" replace />} 
+      />
+
+      {/* Default route - Redirect to dashboard if logged in, login if not */}
       <Route 
         path="/" 
-        element={<Navigate to="/login" replace />} 
+        element={isLoggedIn ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />} 
       />
 
-      {/* Catch all - redirect to home */}
+      {/* Catch all - redirect based on login status */}
       <Route 
         path="*" 
-        element={<Navigate to="/login" replace />} 
+        element={isLoggedIn ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />} 
       />
     </Routes>
   )

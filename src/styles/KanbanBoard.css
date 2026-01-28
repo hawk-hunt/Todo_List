@@ -1,0 +1,142 @@
+/* Kanban Dashboard Styling */
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #fafbfc;
+}
+
+.dashboard-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  margin-left: 280px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: #fafbfc;
+}
+
+/* Page Header */
+.page-header {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 24px;
+  position: sticky;
+  top: 64px;
+  z-index: 10;
+}
+
+.page-title-section {
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
+.page-header h1 {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  gap: 8px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.breadcrumb span {
+  display: inline;
+}
+
+/* Kanban Board */
+.kanban-board {
+  display: flex;
+  gap: 20px;
+  padding: 24px;
+  max-width: 1920px;
+  margin: 0 auto;
+  width: 100%;
+  overflow-x: auto;
+  min-height: calc(100vh - 200px);
+}
+
+.kanban-board::-webkit-scrollbar {
+  height: 6px;
+}
+
+.kanban-board::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.kanban-board::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+.kanban-board::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .main-content {
+    margin-left: 240px;
+  }
+
+  .page-header {
+    padding: 20px;
+  }
+
+  .kanban-board {
+    gap: 16px;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    margin-bottom: 60px;
+  }
+
+  .page-header {
+    padding: 16px;
+    top: 64px;
+  }
+
+  .page-header h1 {
+    font-size: 24px;
+  }
+
+  .kanban-board {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-header {
+    padding: 12px 16px;
+  }
+
+  .page-header h1 {
+    font-size: 20px;
+  }
+
+  .kanban-board {
+    padding: 12px 16px;
+  }
+
+  .breadcrumb {
+    font-size: 12px;
+  }
+}

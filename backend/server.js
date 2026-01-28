@@ -25,9 +25,19 @@ const app = express();
 
 // ==================== MIDDLEWARE ====================
 // CORS: Allow React frontend to communicate with backend
+// Support localhost, WAMP domains, and any domain for development
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:3000"],
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:3000",
+      "http://localhost:5000",
+      "http://127.0.0.1:5173",
+      "http://127.0.0.1:3000",
+      "http://todo.local",
+      "http://localhost",
+      "http://127.0.0.1"
+    ],
     credentials: true,
   })
 );

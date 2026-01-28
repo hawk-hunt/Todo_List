@@ -1,25 +1,10 @@
-/**
- * Dashboard.jsx
- * Main dashboard page with Kanban board UI
- * - Task management with Kanban columns (To Do, In Work, Done)
- * - Add and delete tasks
- * - Responsive design
- */
-
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getDashboard } from '../lib/api';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import TaskColumn from '../components/TaskColumn';
 import '../styles/KanbanBoard.css';
 
 export default function Dashboard() {
-  const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  
   const [tasks, setTasks] = useState([
     {
       id: 1,
@@ -63,43 +48,13 @@ export default function Dashboard() {
     }
   ]);
 
-  // Fetch dashboard data on mount
-  useEffect(() => {
-    const fetchDashboard = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          navigate('/login', { replace: true });
-          return;
-        }
-
-        const response = await getDashboard();
-        setUser(response.data.user);
-        setError('');
-      } catch (err) {
-        console.error('Dashboard error:', err);
-        if (err.response?.status === 401) {
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-          navigate('/login', { replace: true });
-        } else {
-          setError('Failed to load dashboard');
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDashboard();
-  }, [navigate]);
-
   const handleAddTask = (status, taskData) => {
     const newTask = {
       id: Date.now(),
       title: taskData.title,
       description: taskData.description,
       status,
-      assignee: user?.name || 'User',
+      assignee: 'User',
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
     };
     setTasks([...tasks, newTask]);
@@ -109,28 +64,10 @@ export default function Dashboard() {
     setTasks(tasks.filter(task => task.id !== taskId));
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    navigate('/login');
-  };
-
-  if (loading) {
-    return <div style={{ padding: '40px', textAlign: 'center' }}>Loading...</div>;
-  }
-
-  if (error) {
-    return (
-      <div style={{ padding: '40px', textAlign: 'center', color: '#dc2626' }}>
-        {error}
-      </div>
-    );
-  }
-
   return (
     <div className="dashboard">
       {/* Navbar */}
-      <Navbar user={user} onLogout={handleLogout} />
+      <Navbar />
 
       <div className="dashboard-body">
         {/* Sidebar */}
@@ -145,7 +82,7 @@ export default function Dashboard() {
               <nav className="breadcrumb">
                 <span>Dashboard</span>
                 <span>/</span>
-                <span>Tasks</span>
+                <span>To Do List</span>
               </nav>
             </div>
           </div>
@@ -179,4 +116,3 @@ export default function Dashboard() {
     </div>
   );
 }
-

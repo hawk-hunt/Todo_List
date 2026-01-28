@@ -9,13 +9,14 @@
  * - Navigation to dashboard
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../lib/api';
+import { loginUser, checkHealth } from '../lib/api';
 import './Auth.css';
 
 export default function Login() {
   const navigate = useNavigate();
+  const [backendStatus, setBackendStatus] = useState('checking...');
 
   // Form state
   const [formData, setFormData] = useState({
@@ -25,6 +26,25 @@ export default function Login() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  /**
+   * Check backend health on mount
+   */
+  useEffect(() => {
+    const checkBackend = async () => {
+      try {
+        await checkHealth();
+        setBackendStatus('connected');
+      } catch (err) {
+        setBackendStatus('offline');
+      }
+    };
+
+    checkBackend();
+    // Check every 10 seconds
+    const interval = setInterval(checkBackend, 10000);
+    return () => clearInterval(interval);
+  }, []);
 
   /**
    * Handle input change
@@ -81,16 +101,37 @@ export default function Login() {
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
 
-      // Wait a moment for state to update, then redirect
+      // Dispatch event to notify App component of login success
+      // This updates isLoggedIn state in App.jsx
+      window.dispatchEvent(new Event('login-success'));
+
+      // Redirect to dashboard (with slight delay to ensure state updates)
       setTimeout(() => {
         navigate('/dashboard', { replace: true });
       }, 100);
 
     } catch (err) {
       // Display error from backend
-      const errorMessage = err.response?.data?.message || err.message || 'Login failed';
+      let errorMessage = 'Login failed';
+      
+      if (err.response) {
+        // Backend responded with error
+        errorMessage = err.response.data?.message || `Server error (${err.response.status})`;
+      } else if (err.request) {
+        // Request was made but no response
+        errorMessage = 'Network error - Unable to reach server. Make sure backend is running on port 5000.';
+      } else if (err.message) {
+        // Error in request setup
+        errorMessage = err.message;
+      }
+      
       setError(errorMessage);
-      console.error('Login error:', err);
+      console.error('Login error:', {
+        message: err.message,
+        response: err.response?.status,
+        data: err.response?.data,
+        request: !!err.request
+      });
     } finally {
       setLoading(false);
     }
@@ -101,6 +142,19 @@ export default function Login() {
       <div className="auth-card">
         <h1>Welcome Back</h1>
         <p className="auth-subtitle">Login to your account</p>
+
+        {/* Backend Status */}
+        <div style={{
+          padding: '8px 12px',
+          marginBottom: '16px',
+          borderRadius: '4px',
+          fontSize: '12px',
+          backgroundColor: backendStatus === 'connected' ? '#dcfce7' : '#fee2e2',
+          color: backendStatus === 'connected' ? '#166534' : '#991b1b',
+          textAlign: 'center'
+        }}>
+          Backend: <strong>{backendStatus === 'connected' ? '✓ Connected' : '✗ Offline'}</strong>
+        </div>
 
         {/* Error message */}
         {error && <div className="alert alert-error">{error}</div>}

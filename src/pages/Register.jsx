@@ -111,10 +111,14 @@ export default function Register() {
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
 
-      // Redirect to dashboard after 1 second
+      // Dispatch event to notify App component of login success
+      // This updates isLoggedIn state in App.jsx
+      window.dispatchEvent(new Event('login-success'));
+
+      // Redirect to dashboard after successful registration
       setTimeout(() => {
-        navigate('/dashboard');
-      }, 1000);
+        navigate('/dashboard', { replace: true });
+      }, 500);
 
     } catch (err) {
       // Error from backend
