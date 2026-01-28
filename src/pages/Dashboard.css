@@ -1,0 +1,259 @@
+/**
+ * Dashboard Styles
+ * Applies to Dashboard.jsx (protected route)
+ */
+
+.dashboard-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 40px 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto 30px;
+  background: white;
+  padding: 20px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-header h1 {
+  color: #333;
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.btn-danger {
+  background-color: #e74c3c;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+.dashboard-card {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.welcome-section {
+  margin-bottom: 40px;
+  padding-bottom: 30px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.welcome-section h2 {
+  color: #333;
+  font-size: 28px;
+  margin: 0 0 10px 0;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: #666;
+  margin: 0;
+  font-size: 16px;
+}
+
+.user-info {
+  margin-bottom: 40px;
+}
+
+.user-info h3 {
+  color: #333;
+  font-size: 20px;
+  margin: 0 0 20px 0;
+  font-weight: 600;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.info-item {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+}
+
+.info-item label {
+  display: block;
+  color: #666;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.info-item p {
+  color: #333;
+  font-size: 16px;
+  margin: 0;
+  font-weight: 500;
+  word-break: break-all;
+}
+
+.monospace {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  background: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.features-section {
+  background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+  padding: 30px;
+  border-radius: 8px;
+  margin-bottom: 40px;
+}
+
+.features-section h3 {
+  color: #333;
+  font-size: 20px;
+  margin: 0 0 15px 0;
+  font-weight: 600;
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.feature-list li {
+  color: #555;
+  padding: 10px 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.feature-list li:before {
+  content: '✓ ';
+  color: #667eea;
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.tech-info {
+  background: #f8f9fa;
+  padding: 30px;
+  border-radius: 8px;
+  border-left: 4px solid #764ba2;
+}
+
+.tech-info h3 {
+  color: #333;
+  font-size: 20px;
+  margin: 0 0 20px 0;
+  font-weight: 600;
+}
+
+.tech-info p {
+  color: #555;
+  line-height: 1.8;
+  margin: 0 0 15px 0;
+  font-size: 15px;
+}
+
+.tech-info p:last-child {
+  margin-bottom: 0;
+}
+
+.tech-info strong {
+  color: #333;
+  font-weight: 600;
+}
+
+.dashboard-loading {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  padding: 60px 40px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-loading p {
+  color: #666;
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 20px 15px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+    padding: 15px 20px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 24px;
+    width: 100%;
+  }
+
+  .btn-danger {
+    width: 100%;
+  }
+
+  .dashboard-card {
+    padding: 25px 20px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .features-section,
+  .tech-info {
+    padding: 20px;
+  }
+
+  .welcome-section h2 {
+    font-size: 22px;
+  }
+}
